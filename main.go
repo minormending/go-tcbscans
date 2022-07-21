@@ -51,4 +51,15 @@ func main() {
 	for _, c := range chapters {
 		enc.Encode(c)
 	}
+
+	chapter := chapters[0]
+	manga, err := pkg.GetChapterPages(chapter)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for _, i := range manga {
+		enc.Encode(i)
+	}
+
 }
