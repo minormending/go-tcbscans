@@ -3,6 +3,7 @@ package pkg
 import (
 	"errors"
 	"fmt"
+	"html"
 	"regexp"
 	"strings"
 )
@@ -66,5 +67,6 @@ func getChapterName(div string) (string, error) {
 	}
 
 	name = strings.Join(names[:], ": ")
+	name = html.UnescapeString(name)
 	return name, nil
 }
