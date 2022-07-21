@@ -15,13 +15,13 @@ type Series struct {
 // GetSeries returns a slice of all the series found on the TCBScans website.
 func GetSeries() ([]Series, error) {
 	var url string = "https://onepiecechapters.com/projects"
-	html, err := getPage(url)
+	page, err := getPage(url)
 	if err != nil {
 		return nil, err
 	}
 
 	var re *regexp.Regexp = regexp.MustCompile(`href="/mangas/(\d*)/(.*?)">\s*([^<]+)\s*<`)
-	var matches [][]string = re.FindAllStringSubmatch(html, -1)
+	var matches [][]string = re.FindAllStringSubmatch(page, -1)
 	if len(matches) == 0 {
 		return nil, errors.New("unable to parse series from page")
 	}

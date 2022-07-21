@@ -18,13 +18,13 @@ type Chapter struct {
 // GetChapters returns a list of available chapters on TCBScans for a series.
 func GetChapters(series Series) ([]Chapter, error) {
 	var url string = fmt.Sprintf("https://onepiecechapters.com/mangas/%s/%s", series.Id, series.Slug)
-	html, err := getPage(url)
+	page, err := getPage(url)
 	if err != nil {
 		return nil, err
 	}
 
 	var re *regexp.Regexp = regexp.MustCompile(`(?s)href="/chapters/(\d*)/([^"]*)"[^>]*>(.*?)</a>`)
-	var matches [][]string = re.FindAllStringSubmatch(html, -1)
+	var matches [][]string = re.FindAllStringSubmatch(page, -1)
 	if len(matches) == 0 {
 		return nil, errors.New("unable to parse chapters from page")
 	}
