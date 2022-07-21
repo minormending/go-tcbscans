@@ -23,15 +23,22 @@ package main
 
 //import "github.com/minormending/go-tcbscans/cmd"
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/minormending/go-tcbscans/pkg"
 )
 
 func main() {
 	//cmd.Execute()
-	_, err := pkg.GetSeries()
+	series, err := pkg.GetSeries()
 	if err != nil {
 		fmt.Println(err)
+	}
+
+	enc := json.NewEncoder(os.Stdout)
+	for _, s := range series {
+		enc.Encode(s)
 	}
 }
