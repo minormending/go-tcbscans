@@ -41,4 +41,14 @@ func main() {
 	for _, s := range series {
 		enc.Encode(s)
 	}
+
+	serie := series[0]
+	chapters, err := pkg.GetChapters(serie)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for _, c := range chapters {
+		enc.Encode(c)
+	}
 }
