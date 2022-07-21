@@ -30,7 +30,7 @@ func GetChapters(series Series) ([]Chapter, error) {
 
 	var chapters []Chapter = make([]Chapter, 0)
 	for _, match := range matches {
-		name, err := getChapterName(match[2])
+		name, err := getChapterName(match[3])
 		if err != nil {
 			continue
 		}
@@ -38,7 +38,7 @@ func GetChapters(series Series) ([]Chapter, error) {
 		chapters = append(chapters, Chapter{
 			Id:   match[1],
 			Name: name,
-			Slug: match[3],
+			Slug: match[2],
 		})
 	}
 
@@ -46,8 +46,8 @@ func GetChapters(series Series) ([]Chapter, error) {
 }
 
 // getChapterName extracts the name of the chapter from the div html element
-func getChapterName(html string) (string, error) {
-	var name string = strings.TrimSpace(html)
+func getChapterName(div string) (string, error) {
+	var name string = strings.TrimSpace(div)
 	if name == "" {
 		// chapter regex is greedy and matches a empty placeholder div
 		return "", errors.New("empty chapter name, skip div")
@@ -65,5 +65,6 @@ func getChapterName(html string) (string, error) {
 		names = append(names, match[1])
 	}
 
-	return strings.Join(names[:], ": "), nil
+	name = strings.Join(names[:], ": ")
+	return name, nil
 }
