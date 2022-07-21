@@ -7,12 +7,14 @@ import (
 	"regexp"
 )
 
+// A manga series identification information on TCBScans.
 type Series struct {
 	Id   string `json:"id"`
 	Name string `json:"name"`
 	Slug string `json:"slug"`
 }
 
+// GetSeries returns a slice of all the series found on the TCBScans website.
 func GetSeries() ([]Series, error) {
 	page, err := getSeriesPage()
 	if err != nil {
@@ -37,6 +39,7 @@ func GetSeries() ([]Series, error) {
 	return series, nil
 }
 
+// getSeriesPage fetches the html page from TCBScans containing the list of series.
 func getSeriesPage() (string, error) {
 	resp, err := http.Get("https://onepiecechapters.com/projects")
 	if err == nil {
