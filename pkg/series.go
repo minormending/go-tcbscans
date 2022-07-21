@@ -25,7 +25,16 @@ func GetSeries() ([]Series, error) {
 		return nil, errors.New("unable to parse series from page")
 	}
 
-	return []Series{}, nil
+	var series []Series = make([]Series, 0)
+	for _, match := range matches {
+		series = append(series, Series{
+			Id:   match[1],
+			Name: match[2],
+			Slug: match[3],
+		})
+	}
+
+	return series, nil
 }
 
 func getSeriesPage() (string, error) {
