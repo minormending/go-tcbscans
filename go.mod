@@ -6,4 +6,5 @@ require (
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/spf13/cobra v1.5.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/yusukebe/go-pngquant v0.0.0-20200223090257-49b91f11b627 // indirect
 )
