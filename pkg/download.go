@@ -7,6 +7,8 @@ import (
 	"log"
 	"os"
 	"path"
+
+	"github.com/yusukebe/go-pngquant"
 )
 
 // SaveChapter downloads all the manga images for the given chapter into the given directory.
@@ -35,7 +37,57 @@ func SaveChapter(chapter Chapter, directory string, force bool) error {
 		if err != nil {
 			return err
 		}
+
+		err = minimizePng(filename)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
 
+func minimizePng(filename string) error {
+	file, err := os.Open(filename)
+	if err != nil {
+		return err
+	}
+
+	var imgSizeBefore int64 = 0
+	imgInfo, err := file.Stat()
+	if err != nil {
+		imgSizeBefore = imgInfo.Size()
+	}
+
+	img, err := png.Decode(file)
+	file.Close()
+	if err != nil {
+		return err
+	}
+
+	minimizedImg, err := pngquant.Compress(img, "3")
+	if err != nil {
+		return err
+	}
+
+	file, err = os.Create(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	err = png.Encode(file, minimizedImg)
+	if err != nil {
+		return err
+	}
+
+	if imgSizeBefore > 0 {
+		imgInfo, err := file.Stat()
+		if err == nil {
+			imgSizeAfter := imgInfo.Size()
+			var change int64 = int64((float64(imgSizeAfter) / float64(imgSizeBefore)) * 100)
+			log.Printf("compressed image %s by %d%%", filename, change)
+		}
+	}
+
+	return nil
+}
